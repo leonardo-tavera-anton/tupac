@@ -3,38 +3,41 @@ import { Head, Link } from '@inertiajs/react';
 export default function Welcome() {
   return (
     <>
-      <Head title="Bienvenido" />
+      <Head title="Inicio" />
 
-      <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-blue-400 flex flex-col items-center justify-center text-white px-6">
-        
-        <h1 className="text-5xl font-extrabold mb-4 text-center">
-          ¡Bienvenido a la Plataforma Municipal!
+      {/* Contenedor principal */}
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-600 to-blue-500 text-white px-6 py-12">
+        <h1 className="text-5xl font-extrabold text-center mb-6">
+          🚀 ¡Bienvenido a tu Panel!
         </h1>
 
-        <p className="text-lg mb-8 text-center max-w-xl">
-          Esta es tu app moderna construida con Laravel, Inertia y React — lista para administrar tu contenido y servicios municipales.
+        <p className="text-lg text-center max-w-lg mb-8">
+          Esta es tu página de inicio basada en Laravel + Inertia + React + Tailwind CSS.
+          Aquí puedes acceder al dashboard o iniciar sesión si aún no lo has hecho.
         </p>
 
         <div className="flex gap-4">
+          {/* Botón para ir al Dashboard */}
           <Link
             href="/dashboard"
-            className="bg-white text-indigo-700 font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-100 transition"
+            className="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition"
           >
-            Ir al Dashboard
+            🏠 Ir al Dashboard
           </Link>
 
+          {/* Botón para iniciar sesión */}
           <Link
             href="/login"
-            className="bg-indigo-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-indigo-900 transition"
+            className="px-6 py-3 bg-indigo-900 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-800 transition"
           >
-            Iniciar Sesión
+            🔑 Iniciar Sesión
           </Link>
         </div>
 
-        <footer className="mt-16 text-sm opacity-80">
-          © {new Date().getFullYear()} Municipalidad — Todos los derechos reservados
+        {/* Footer */}
+        <footer className="mt-10 text-sm opacity-90">
+          © {new Date().getFullYear()} Municipalidad • Todos los derechos reservados
         </footer>
-
       </div>
     </>
   );
