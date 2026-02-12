@@ -7,21 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void {
         Schema::create('procedimientos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('area_id')->constrained('areas')->onDelete('cascade');
-            $table->string('codigo_generico'); // Columna GENERICO
-            $table->integer('orden');          // Columna ORDEN
-            $table->text('especifica');        // Columna ESPECIFICA
-            $table->decimal('importe', 10, 2); // Columna IMPORTE
-            $table->decimal('factor', 12, 6);  // Columna FACTOR
-            $table->integer('plazo_dias')->default(30);
-            $table->string('calificacion')->default('Evaluación Previa');
-            $table->string('silencio_adm')->default('Negativo');
+            $table->id('id_tramite');
+            $table->string('codigo_tupa')->nullable();
+            $table->string('nombre_tramite');
+            $table->integer('id_area');
+            $table->string('modalidad')->nullable();
+            $table->text('descripcion_tecnica')->nullable();
+            $table->string('unidad_medida')->nullable();
+            $table->boolean('es_generico')->default(false);
             $table->timestamps();
         });
     }
-
-    public function down(): void {
-        Schema::dropIfExists('procedimientos');
-    }
+    public function down(): void { Schema::dropIfExists('procedimientos'); }
 };
