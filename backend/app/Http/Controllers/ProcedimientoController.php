@@ -2,48 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Procedimiento;
+use App\Services\ProcedimientoService;
+use App\Http\Resources\ProcedimientoResource;
 use Illuminate\Http\Request;
 
-class ProcedimientoController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class ProcedimientoController extends Controller {
+    protected $service;
+    public function __construct(ProcedimientoService $service) { $this->service = $service; }
+
+    public function index(Request $request) {
+        $res = $this->service->todos($request->buscar, $request->query('orden', 'asc'));
+        return ProcedimientoResource::collection($res);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        return new ProcedimientoResource($this->service->registrar($request->all()));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Procedimiento $procedimiento)
-    {
-        //
+    public function show($id) {
+        return new ProcedimientoResource($this->service->obtener($id));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Procedimiento $procedimiento)
-    {
-        //
+    public function update(Request $request, $id) {
+        return new ProcedimientoResource($this->service->editar($id, $request->all()));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Procedimiento $procedimiento)
-    {
-        //
+    public function destroy($id) {
+        $this->service->borrar($id);
+        return response()->json(['msg' => 'Eliminado']);
     }
 }
