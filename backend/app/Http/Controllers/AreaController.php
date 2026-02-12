@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\AreaService;
+use App\Http\Resources\AreaResource;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -17,18 +18,11 @@ class AreaController extends Controller
 
     public function index(Request $request)
     {
-        // Capturamos filtros de la URL: ?buscar=nombre&orden=desc
         $buscar = $request->query('buscar');
         $orden  = $request->query('orden', 'asc');
 
         $areas = $this->servicio->listarAreas($buscar, $orden);
         
-        return response()->json($areas);
-    }
-
-    public function store(Request $request)
-    {
-        $area = $this->servicio->registrarArea($request->all());
-        return response()->json($area, 201);
+        return AreaResource::collection($areas);
     }
 }

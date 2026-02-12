@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AreaController;
+use App\Http\Controllers\AreaController;
 
 Route::get('/usuario', function (Request $request) { //se encarga de la conexion
     return $request->user();
