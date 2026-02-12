@@ -8,9 +8,9 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); // Para "SECRETARIA GENERAL", etc.
+            $table->string('nombre'); 
             $table->string('ubicacion')->nullable();
-            $table->string('anexo')->nullable();
+            $table->string('anexo')->nullable(); //numero, etc
             $table->timestamps();
         });
     }

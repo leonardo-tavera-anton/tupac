@@ -20,4 +20,14 @@ class AreaRepository
     {
         return Area::findOrFail($id);
     }
+    public function update(Area $area, array $data)
+    {
+        $area->update($data);
+        return $area;
+    }
+    public function delete(Area $area)
+    {
+        $area->delete();
+        return $area;
+    }
 }
