@@ -12,8 +12,7 @@ class AreaResource extends JsonResource
         return [
             'id'             => $this->id,
             'nombre'         => $this->nombre,
-            'ubicacion'      => $this->ubicacion,
-            'anexo'          => $this->anexo,
+            'telefono'       => $this->telefono,
             'procedimientos' => $this->procedimientos, // Incluye la relación
             'creado_el'      => $this->created_at->format('d-m-Y'),
         ];

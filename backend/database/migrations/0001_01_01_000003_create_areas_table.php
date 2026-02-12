@@ -9,8 +9,7 @@ return new class extends Migration {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre'); 
-            $table->string('ubicacion')->nullable();
-            $table->string('anexo')->nullable(); //numero, etc
+            $table->string('telefono')->nullable();
             $table->timestamps();
         });
     }

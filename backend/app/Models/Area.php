@@ -13,8 +13,7 @@ class Area extends Model
     // Campos que se pueden llenar desde el Excel o formulario
     protected $fillable = [
         'nombre',
-        'ubicacion',
-        'anexo'
+        'telefono'
     ];
 
     /**
