@@ -6,26 +6,33 @@ use App\Models\Area;
 
 class AreaRepository
 {
-    public function all()
+    public function buscarYOrdenar($buscar = null, $orden = 'asc')
     {
-        return Area::with('procedimientos')->get();
+        return Area::with('procedimientos')
+            ->when($buscar, function ($consulta, $buscar) {
+                return $consulta->where('nombre', 'LIKE', "%{$buscar}%");
+            })
+            ->orderBy('id', $orden)
+            ->get();
     }
 
-    public function create(array $data)
+    public function crear(array $datos)
     {
-        return Area::create($data);
+        return Area::create($datos);
     }
 
-    public function find($id)
+    public function buscarPorId($id)
     {
         return Area::findOrFail($id);
     }
-    public function update(Area $area, array $data)
+
+    public function actualizar(Area $area, array $datos)
     {
-        $area->update($data);
+        $area->update($datos);
         return $area;
     }
-    public function delete(Area $area)
+
+    public function eliminar(Area $area)
     {
         $area->delete();
         return $area;

@@ -8,21 +8,27 @@ use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
-    protected $service;
+    protected $servicio;
 
-    public function __construct(AreaService $service)
+    public function __construct(AreaService $servicio)
     {
-        $this->service = $service;
+        $this->servicio = $servicio;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->service->listarAreas());
+        // Capturamos filtros de la URL: ?buscar=nombre&orden=desc
+        $buscar = $request->query('buscar');
+        $orden  = $request->query('orden', 'asc');
+
+        $areas = $this->servicio->listarAreas($buscar, $orden);
+        
+        return response()->json($areas);
     }
 
     public function store(Request $request)
     {
-        $data = $this->service->registrarArea($request->all());
-        return response()->json($data, 201);
+        $area = $this->servicio->registrarArea($request->all());
+        return response()->json($area, 201);
     }
 }

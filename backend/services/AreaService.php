@@ -6,21 +6,20 @@ use App\Repositories\AreaRepository;
 
 class AreaService
 {
-    protected $repository;
+    protected $repositorio;
 
-    public function __construct(AreaRepository $repository)
+    public function __construct(AreaRepository $repositorio)
     {
-        $this->repository = $repository;
+        $this->repositorio = $repositorio;
     }
 
-    public function listarAreas()
+    public function listarAreas($buscar = null, $orden = 'asc')
     {
-        return $this->repository->all();
+        return $this->repositorio->buscarYOrdenar($buscar, $orden);
     }
 
-    public function registrarArea(array $data)
+    public function registrarArea(array $datos)
     {
-        // Aquí podrías validar si el nombre ya existe o formatear el texto
-        return $this->repository->create($data);
+        return $this->repositorio->crear($datos);
     }
 }
