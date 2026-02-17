@@ -1,29 +1,19 @@
-<div style="height: 100%; display: flex; flex-direction: column; background: #1e1e2d; color: white; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
-  <div style="padding: 30px 20px; font-weight: bold; font-size: 1.5rem; text-align: center; border-bottom: 1px solid #2d2d3f;">
-    🚀 <span style="color: #00d4ff;">TUPA</span> Front
+<div class="sidebar-container">
+  <div class="logo">
+    <h2>TUPAC APP</h2>
   </div>
 
-  <nav style="flex: 1; padding: 20px 0;">
-    <a routerLink="/inicio" routerLinkActive="active" 
-       style="display: block; padding: 15px 25px; color: #a2a3b7; text-decoration: none; border-left: 4px solid transparent; transition: 0.3s;">
-       🏠 Inicio
+  <nav class="menu">
+    <a routerLink="/inicio" routerLinkActive="active" class="menu-item">
+      <span class="icon">🏠</span> Inicio
     </a>
     
-    <a routerLink="/tupa" routerLinkActive="active" 
-       style="display: block; padding: 15px 25px; color: #a2a3b7; text-decoration: none; border-left: 4px solid transparent; transition: 0.3s;">
-       📄 Ver Trámites
+    <a routerLink="/tupa" routerLinkActive="active" class="menu-item">
+      <span class="icon">📄</span> Ver Trámites
     </a>
   </nav>
 
-  <div style="padding: 20px; font-size: 0.8rem; color: #555; text-align: center; border-top: 1px solid #2d2d3f;">
-    Laravel 12 + Angular
+  <div class="footer">
+    <p>v1.0 - 2026</p>
   </div>
 </div>
-
-<style>
-  .active {
-    color: white !important;
-    background: #252538;
-    border-left: 4px solid #00d4ff !important;
-  }
-</style>
