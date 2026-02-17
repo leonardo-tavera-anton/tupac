@@ -21,13 +21,9 @@ class Requisito extends Model
         'factor',
     ];
 
-    /**
-     * Casting de tipos. 
-     * Aunque en la foto dice 'integer', si el monto maneja decimales 
-     * (dinero), podrías cambiarlo a 'decimal:2'.
-     */
+    /*en decimales*/
     protected $casts = [
-        'monto' => 'integer',
+        'monto' => 'decimal',
         'factor' => 'integer',
     ];
 }

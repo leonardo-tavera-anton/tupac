@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Procedimiento extends Model
+class Tramite extends Model
 {
     use HasFactory;
 
     // Indicamos el nombre de la tabla (opcional si tu tabla se llama 'procedimientos')
-    protected $table = 'procedimientos';
+    protected $table = 'tramite';
 
     // Definimos la llave primaria personalizada
     protected $primaryKey = 'id_tramite';
@@ -19,7 +19,7 @@ class Procedimiento extends Model
      * Atributos que se pueden asignar de forma masiva.
      */
     protected $fillable = [
-        'codigo_tupa',
+        'codigo_tupac',
         'nombre_tramite',
         'id_area',
         'modalidad',

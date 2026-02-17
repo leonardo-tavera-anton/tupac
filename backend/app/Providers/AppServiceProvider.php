@@ -5,10 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 // Importamos los Servicios
 use App\Services\AreaService;
-use App\Services\ProcedimientoService;
+use App\Services\TramiteService;
 // Importamos los Repositorios
 use App\Repositories\AreaRepository;
-use App\Repositories\ProcedimientoRepository;
+use App\Repositories\TramiteRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Registro para el módulo de Procedimientos
-        $this->app->bind(ProcedimientoService::class, function ($app) {
-            return new ProcedimientoService($app->make(ProcedimientoRepository::class));
+        $this->app->bind(TramiteService::class, function ($app) {
+            return new TramiteService($app->make(TramiteRepository::class));
         });
     }
 

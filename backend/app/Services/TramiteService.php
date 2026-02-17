@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Repositories\ProcedimientoRepository;
+use App\Repositories\TramiteRepository;
 
-class ProcedimientoService {
+class TramiteService {
     protected $repo;
-    public function __construct(ProcedimientoRepository $repo) { $this->repo = $repo; }
+    public function __construct(TramiteRepository $repo) { $this->repo = $repo; }
 
     public function todos($buscar, $orden) { return $this->repo->listar($buscar, $orden); }
     public function registrar($datos) { return $this->repo->crear($datos); }
