@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="header">
+    <h2>📄 Listado de Trámites TUPA</h2>
+    <button (click)="ngOnInit()">Actualizar</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre del Trámite</th>
+        <th>Código</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of tramites; track item.id) {
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.nombre_tramite }}</td>
+          <td>{{ item.codigo_tupa }}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3" class="empty">No hay datos en la tabla.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
