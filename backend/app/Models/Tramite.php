@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -19,9 +19,10 @@ class Tramite extends Model
      * Atributos que se pueden asignar de forma masiva.
      */
     protected $fillable = [
-        'codigo_tupac',
+        'codigo_tupa',
         'nombre_tramite',
         'id_area',
+        'id_usuario',
         'modalidad',
         'descripcion_tecnica',
         'unidad_medida',
@@ -36,4 +37,10 @@ class Tramite extends Model
         'es_generico' => 'boolean',
         'id_area' => 'integer',
     ];
+
+    public function usuario()
+{
+    // Un trámite pertenece a un usuario
+    return $this->belongsTo(Usuario::class, 'usuario_id');
+}
 }

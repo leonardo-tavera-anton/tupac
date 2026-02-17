@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany; // Importante para el tipado
 
 class Usuario extends Authenticatable
 {
@@ -25,7 +26,12 @@ class Usuario extends Authenticatable
         'remember_token',
     ];
 
-    // Indica a Laravel que el login es por el campo 'correo'
+    // RELACIÓN: Un usuario tiene muchos trámites
+    public function tramites(): HasMany
+    {
+        return $this->hasMany(Tramite::class, 'usuario_id');
+    }
+
     public function getEmailAttribute()
     {
         return $this->correo;

@@ -6,7 +6,7 @@ use App\Services\UsuarioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class UsuarioController extends Controller
 {
     protected $usuarioService;
 

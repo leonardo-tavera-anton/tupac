@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Requisito;
 
-class RequisitoService
+class RequisitoRepository
 {
     /**
      * Obtener todos los requisitos con su cálculo de costo.

@@ -16,11 +16,8 @@ class Area extends Model
         'telefono'
     ];
 
-    /**
-     * Un área tiene muchos procedimientos (TUPAC)
-     */
-    public function procedimientos(): HasMany
+    public function tramite(): HasMany
     {
-        return $this->hasMany(Procedimiento::class);
+        return $this->hasMany(Tramite::class);
     }
 }
