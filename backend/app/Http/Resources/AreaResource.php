@@ -14,7 +14,7 @@ class AreaResource extends JsonResource
             'nombre'         => $this->nombre,
             'telefono'       => $this->telefono,
             'procedimientos' => $this->procedimientos, // Incluye la relación
-            'creado_el'      => $this->created_at->format('d-m-Y'),
+            'creado_el'      => $this->created_at->format('d/m/Y'),
         ];
     }
 }

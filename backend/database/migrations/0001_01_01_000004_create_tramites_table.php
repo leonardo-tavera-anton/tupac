@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
-        Schema::create('procedimientos', function (Blueprint $table) {
+        Schema::create('tramites', function (Blueprint $table) {
             $table->id('id_tramite');
-            $table->string('codigo_tupa')->nullable();
+            $table->string('codigo_tupac')->nullable();
             $table->string('nombre_tramite');
             $table->integer('id_area');
             $table->string('modalidad')->nullable();
