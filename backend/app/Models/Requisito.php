@@ -10,7 +10,7 @@ class Requisito extends Model
     use HasFactory;
 
     // Nombre de la tabla
-    protected $table = 'requisito';
+    protected $table = 'requisitos';
 
     /**
      * Atributos asignables masivamente.

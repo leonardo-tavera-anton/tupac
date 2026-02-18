@@ -7,14 +7,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AreaResource extends JsonResource
 {
-    public function toArray(Request $request): array
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         return [
-            'id'             => $this->id,
-            'nombre'         => $this->nombre,
-            'telefono'       => $this->telefono,
-            'procedimientos' => $this->procedimientos, // Incluye la relación
-            'creado_el'      => $this->created_at->format('d/m/Y'),
+            'id' => $this->id,
+            'nombre' => $this->nombre,
+            'telefono' => $this->telefono,
+            // Aquí incluimos los trámites de esta área
+            'tramites' => TramiteResource::collection($this->whenLoaded('tramites')),
         ];
     }
 }

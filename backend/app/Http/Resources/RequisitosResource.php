@@ -5,22 +5,14 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RequisitoResource extends JsonResource
+class RequisitosResource extends JsonResource // <--- Asegúrate que tenga la 's'
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
-            'id'          => $this->id,
+            'id' => $this->id,
             'descripcion' => $this->descripcion,
-            'monto'       => $this->monto,
-            'factor'      => $this->factor,
-            'created_at'  => $this->created_at,
-            'updated_at'  => $this->updated_at,
+            'es_obligatorio' => $this->es_obligatorio
         ];
     }
 }

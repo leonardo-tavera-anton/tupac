@@ -3,16 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Services\TramiteService;
-use App\Http\Resources\TramiteResource;
+use App\Http\Resources\AreaResource; // Usaremos AreaResource ya que el nivel superior es Área
+use App\Models\Area; // IMPORTANTE: Importar el modelo
 use Illuminate\Http\Request;
+use App\Models\Tramite;
 
 class TramiteController extends Controller {
     protected $service;
-    public function __construct(TramiteService $service) { $this->service = $service; }
 
+    public function __construct(TramiteService $service) { 
+        $this->service = $service; 
+    }
+
+    /**
+     * Devuelve las Áreas con sus Trámites y Requisitos anidados
+     */
     public function index(Request $request) {
-        $res = $this->service->todos($request->buscar, $request->query('orden', 'asc'));
-        return TramiteResource::collection($res);
+        // Usamos Eager Loading para evitar el problema de consultas N+1
+        // Esto trae: Area -> Trámites -> Requisitos en una sola carga
+        $areas = Area::with(['tramites.requisitos'])->get();
+        
+        // Usamos AreaResource para devolver el JSON formateado
+        return AreaResource::collection($areas);
     }
 
     public function store(Request $request) {

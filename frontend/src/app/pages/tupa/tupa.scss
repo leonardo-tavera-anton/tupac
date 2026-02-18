@@ -1,16 +1,28 @@
-.container {
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
+.tupa-container {
+  max-width: 1200px;
+  margin: auto;
 }
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+
+.list-group-item.active {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  th { background: #f4f4f4; padding: 10px; text-align: left; }
-  td { padding: 10px; border-bottom: 1px solid #eee; }
+
+.area-name {
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.sticky-top {
+  max-height: 80vh;
+  overflow-y: auto;
 }

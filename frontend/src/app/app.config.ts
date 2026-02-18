@@ -11,6 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()) // para habilitar peticiones http
+    provideHttpClient(withFetch()),// para habilitar peticiones http
+    provideHttpClient() 
   ]
 };

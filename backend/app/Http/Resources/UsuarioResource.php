@@ -12,15 +12,14 @@ class UsuarioResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         return [
-            'id'        => $this->id,
-            'nombre'    => $this->nombre,
-            'apellido'  => $this->apellido,
-            'correo'    => $this->correo,
-            'created_at'=> $this->created_at,
-            'updated_at'=> $this->updated_at,
+            'id' => $this->id,
+            'nombre' => $this->nombre,
+            'email' => $this->email,
+            // Aquí incluimos los trámites de este usuario
+            'tramites' => TramiteResource::collection($this->whenLoaded('tramites')),
         ];
     }
 }

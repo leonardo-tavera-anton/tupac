@@ -15,9 +15,9 @@ class Area extends Model
         'nombre',
         'telefono'
     ];
-
-    public function tramite(): HasMany
-    {
-        return $this->hasMany(Tramite::class);
-    }
+    protected $table = 'areas';
+    // En Area.php
+public function tramites() {
+    return $this->hasMany(Tramite::class, 'id_area', 'id');
+}
 }

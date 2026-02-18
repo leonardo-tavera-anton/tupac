@@ -1,9 +1,14 @@
 import { Routes } from '@angular/router';
-import { Inicio } from './pages/inicio/inicio';
-import { Tupa } from './pages/tupa/tupa';
+import { TupaComponent } from './pages/tupa/tupa'; // <--- Cambiado de Tupa a TupaComponent
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: 'inicio', component: Inicio },
-  { path: 'tupa', component: Tupa }
+  {
+    path: 'tupa',
+    component: TupaComponent // <--- Debe coincidir con el nombre de la clase
+  },
+  {
+    path: '',
+    redirectTo: 'tupa',
+    pathMatch: 'full'
+  }
 ];

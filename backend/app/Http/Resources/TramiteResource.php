@@ -5,16 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TramiteResource extends JsonResource {
-    public function toArray(Request $request): array {
+class TramiteResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
         return [
-            'id' => $this->id_tramite,
-            'codigo' => $this->codigo_tupa,
-            'nombre' => $this->nombre_tramite,
-            'area_id' => $this->id_area,
-            'modalidad' => $this->modalidad,
-            'generico' => $this->es_generico,
-            'fecha_registro' => $this->created_at->format('d/m/Y')
+            'id_tramite' => $this->id_tramite,
+            'nombre_tramite' => $this->nombre_tramite,
+            'monto' => $this->monto,
+            // CAMBIA RequisitoResource por RequisitosResource (con 's')
+            'requisitos' => RequisitosResource::collection($this->whenLoaded('requisitos')),
         ];
     }
 }

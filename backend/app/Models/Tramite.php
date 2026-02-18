@@ -1,46 +1,36 @@
-<?php 
+<?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tramite extends Model
 {
-    use HasFactory;
+    // Forzamos el nombre de la tabla en plural como está en tu migración
+    protected $table = 'tramites'; 
 
-    // Indicamos el nombre de la tabla (opcional si tu tabla se llama 'procedimientos')
-    protected $table = 'tramite';
-
-    // Definimos la llave primaria personalizada
+    // También asegúrate de que la llave primaria sea la que pusiste en la migración
     protected $primaryKey = 'id_tramite';
 
-    /**
-     * Atributos que se pueden asignar de forma masiva.
-     */
     protected $fillable = [
+        'usuario_id',
         'codigo_tupa',
         'nombre_tramite',
+        'monto',
         'id_area',
-        'id_usuario',
         'modalidad',
         'descripcion_tecnica',
         'unidad_medida',
-        'es_generico',
+        'es_generico'
     ];
 
-    /**
-     * Casting de tipos de datos.
-     * Esto asegura que 'es_generico' se trate como booleano en PHP.
-     */
-    protected $casts = [
-        'es_generico' => 'boolean',
-        'id_area' => 'integer',
-    ];
+    public function requisitos()
+    {
+        return $this->hasMany(Requisito::class, 'tramite_id', 'id_tramite');
+    }
 
-    public function usuario()
-{
-    // Un trámite pertenece a un usuario
-    return $this->belongsTo(Usuario::class, 'usuario_id');
-}
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'id_area');
+    }
 }
