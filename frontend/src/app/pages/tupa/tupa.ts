@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
 import { TupaService } from '../../services/tupa.service';
+=======
+import { TupaService } from '../../services/tupa.service'; // Asegúrate de que apunte al archivo .service
+>>>>>>> aa2fccf0d093e4b2c927b6f4cc309afe767a5bb5
 
 @Component({
   selector: 'app-tupa',
@@ -10,6 +14,7 @@ import { TupaService } from '../../services/tupa.service';
   templateUrl: './tupa.html',
   styleUrls: ['./tupa.scss']
 })
+<<<<<<< HEAD
 export class TupaComponent implements OnInit {
   areas: any[] = [];
   filterText: string = '';
@@ -23,6 +28,23 @@ export class TupaComponent implements OnInit {
         this.areas = res.data ? res.data : res;
       },
       error: (err: any) => console.error('Error:', err)
+=======
+export class Tupa implements OnInit {
+  // Esto quita el error de "Property tramites does not exist"
+  tramites: any[] = [];
+
+  constructor(private tupaService: TupaService) {}
+
+  // Esto quita el error de "Property ngOnInit does not exist"
+  ngOnInit(): void {
+    this.tupaService.getTramites().subscribe({
+      next: (data: any) => {
+        this.tramites = data;
+      },
+      error: (err: any) => {
+        console.error('Error en el servicio:', err);
+      }
+>>>>>>> aa2fccf0d093e4b2c927b6f4cc309afe767a5bb5
     });
   }
 
