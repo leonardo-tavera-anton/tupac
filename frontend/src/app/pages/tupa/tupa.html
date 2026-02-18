@@ -1,29 +1,37 @@
-<div class="container">
-  <div class="header">
-    <h2>📄 Listado de Trámites TUPA</h2>
-    <button (click)="ngOnInit()">Actualizar</button>
+<div class="tupa-container">
+  <div class="tupa-header">
+    <h1>Listado de Trámites (TUPA)</h1>
+    <button class="btn-refresh" (click)="ngOnInit()">
+      <span class="icon">🔄</span> Actualizar Datos
+    </button>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre del Trámite</th>
-        <th>Código</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of tramites; track item.id) {
+  <div class="table-wrapper">
+    <table>
+      <thead>
         <tr>
-          <td>{{ item.id }}</td>
-          <td>{{ item.nombre_tramite }}</td>
-          <td>{{ item.codigo_tupa }}</td>
+          <th>ID</th>
+          <th>Nombre del Trámite</th>
+          <th>Código TUPA</th>
+          <th>Acciones</th>
         </tr>
-      } @empty {
-        <tr>
-          <td colspan="3" class="empty">No hay datos en la tabla.</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (item of tramites; track item.id) {
+          <tr>
+            <td>{{ item.id }}</td>
+            <td class="name-cell">{{ item.nombre_tramite }}</td>
+            <td><span class="badge">{{ item.codigo_tupa }}</span></td>
+            <td>
+              <button class="btn-view">👁️ Ver</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="empty-msg">No se encontraron trámites en la base de datos.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
