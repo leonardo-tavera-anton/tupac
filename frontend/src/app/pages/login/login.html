@@ -1,0 +1,23 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Bienvenido a TUPA</h2>
+    
+    <form (submit)="onLogin()">
+      <div class="form-group">
+        <label>Nombre de Usuario</label>
+        <input type="text" [(ngModel)]="user.nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="user.password" name="password" placeholder="********" required>
+      </div>
+
+      <button type="submit" class="btn-primary">Entrar</button>
+
+      <div class="register-link">
+        <p>¿No tienes cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+      </div>
+    </form>
+  </div>
+</div>

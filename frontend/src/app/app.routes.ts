@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
-import { Inicio } from './pages/inicio/inicio';
+import { Login } from './pages/login/login';
 import { Tupa } from './pages/tupa/tupa';
+import { Register } from './pages/register/register'; // 1. Importa el componente
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: 'inicio', component: Inicio },
-  { path: 'tupa', component: Tupa }
+  { path: 'login', component: Login },
+  { path: 'register', component: Register }, // 2. Añade la ruta de registro
+  { path: 'tupa', component: Tupa },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' } 
 ];

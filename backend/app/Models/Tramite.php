@@ -4,43 +4,46 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tramite extends Model
 {
     use HasFactory;
 
-    // Indicamos el nombre de la tabla (opcional si tu tabla se llama 'procedimientos')
+    // Tabla correcta según tu base de datos
     protected $table = 'tramite';
 
-    // Definimos la llave primaria personalizada
     protected $primaryKey = 'id_tramite';
 
-    /**
-     * Atributos que se pueden asignar de forma masiva.
-     */
     protected $fillable = [
         'codigo_tupa',
         'nombre_tramite',
         'id_area',
         'id_usuario',
-        'modalidad',
         'descripcion_tecnica',
-        'unidad_medida',
-        'es_generico',
+        'es_generico'
     ];
 
-    /**
-     * Casting de tipos de datos.
-     * Esto asegura que 'es_generico' se trate como booleano en PHP.
-     */
     protected $casts = [
         'es_generico' => 'boolean',
         'id_area' => 'integer',
+        'id_usuario' => 'integer',
     ];
 
-    public function usuario()
-{
-    // Un trámite pertenece a un usuario
-    return $this->belongsTo(Usuario::class, 'usuario_id');
-}
+    /**
+     * Relación: Un trámite pertenece a un Usuario (Clase Usuario)
+     */
+    public function usuario(): BelongsTo
+    {
+        // Corregido: Ahora referencia a Usuario::class y usa id_usuario
+        return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+
+    /**
+     * Relación: Un trámite pertenece a un Área
+     */
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class, 'id_area');
+    }
 }

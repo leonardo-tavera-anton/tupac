@@ -6,13 +6,13 @@ use App\Models\Usuario;
 
 class UsuarioRepository
 {
-    public function registrar(array $data)
+    public function create(array $data)
     {
         return Usuario::create($data);
     }
 
-    public function buscarPorCorreo(string $correo)
+    public function findByDni(string $dni)
     {
-        return Usuario::where('correo', $correo)->first();
+        return Usuario::where('dni', $dni)->first();
     }
 }

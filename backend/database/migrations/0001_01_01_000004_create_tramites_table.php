@@ -5,30 +5,28 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-  
     public function up(): void {
-        Schema::create('tramites', function (Blueprint $table) {
+        Schema::create('tramite', function (Blueprint $table) {
             $table->id('id_tramite');
-            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
             $table->string('codigo_tupa')->nullable();
-            $table->string('nombre_tramite');
-            $table->decimal('monto', 10, 2)->default(0.00);
-            $table->unsignedBigInteger('id_area'); 
-            $table->string('modalidad')->nullable();
+            $table->text('nombre_tramite');
             $table->text('descripcion_tecnica')->nullable();
-            $table->string('unidad_medida')->nullable();
             $table->boolean('es_generico')->default(false);
-            $table->timestamps();
 
-            // Llave foránea hacia la tabla areas
+            $table->unsignedBigInteger('id_area'); 
+            $table->unsignedBigInteger('id_usuario'); 
+
+            // RELACIONES CORREGIDAS
             $table->foreign('id_area')->references('id')->on('areas')->onDelete('cascade');
+            
+            // CAMBIO AQUÍ: 'users' -> 'usuarios'
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void { 
-        Schema::dropIfExists('tramites'); 
+        Schema::dropIfExists('tramite'); 
     }
 };

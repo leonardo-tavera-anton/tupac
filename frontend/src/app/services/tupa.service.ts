@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,13 @@ export class TupaService {
   constructor(private http: HttpClient) { }
 
   getTramites(): Observable<any> {
-    return this.http.get(this.url);
+    const token = localStorage.getItem('token');
+    
+    // Configuramos la cabecera de autorización
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(this.url, { headers });
   }
 }
