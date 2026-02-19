@@ -1,22 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private url = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://localhost:8000/api'; 
+  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this._isLoggedIn$.asObservable();
 
-  constructor(private http: HttpClient) {}
-
-  register(userData: any) {
-    return this.http.post(`${this.url}/register`, userData);
+  constructor(private http: HttpClient) {
+    const token = this.getToken();
+    this._isLoggedIn$.next(!!token);
   }
 
-  login(credentials: any) {
-    return this.http.post(`${this.url}/login`, credentials).pipe(
-      tap((res: any) => {
-        if (res.token) localStorage.setItem('token', res.token);
-      })
+  private saveToken(token: string): void {
+    localStorage.setItem('auth_token', token);
+    this._isLoggedIn$.next(true);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
+  }
+
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, data).pipe(
+      tap((response: any) => this.saveToken(response.token))
     );
+  }
+
+  login(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, data).pipe(
+      tap((response: any) => this.saveToken(response.token))
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('auth_token');
+    this._isLoggedIn$.next(false);
   }
 }
