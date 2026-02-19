@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,34 +11,51 @@ export class AuthService {
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this._isLoggedIn$.asObservable();
 
-  constructor(private http: HttpClient) {
-    const token = this.getToken();
-    this._isLoggedIn$.next(!!token);
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object // Inyectamos el ID de la plataforma
+  ) {
+    // Solo verificamos el token si estamos en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      const token = this.getToken();
+      this._isLoggedIn$.next(!!token);
+    }
   }
 
   private saveToken(token: string): void {
-    localStorage.setItem('auth_token', token);
-    this._isLoggedIn$.next(true);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('auth_token', token);
+      this._isLoggedIn$.next(true);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('auth_token');
+    }
+    return null;
   }
 
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data).pipe(
-      tap((response: any) => this.saveToken(response.token))
+      tap((response: any) => {
+        if (response.token) this.saveToken(response.token);
+      })
     );
   }
 
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, data).pipe(
-      tap((response: any) => this.saveToken(response.token))
+      tap((response: any) => {
+        if (response.token) this.saveToken(response.token);
+      })
     );
   }
 
   logout(): void {
-    localStorage.removeItem('auth_token');
-    this._isLoggedIn$.next(false);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('auth_token');
+      this._isLoggedIn$.next(false);
+    }
   }
 }

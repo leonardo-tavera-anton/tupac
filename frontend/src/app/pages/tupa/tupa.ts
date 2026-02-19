@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TupaService } from '../../services/tupa.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tupa',
@@ -10,31 +12,50 @@ import { TupaService } from '../../services/tupa.service';
   templateUrl: './tupa.html',
   styleUrls: ['./tupa.scss']
 })
-export class TupaComponent implements OnInit {
+export class Tupa implements OnInit {
   areas: any[] = [];
   filterText: string = '';
-  areaSeleccionada: any = null; // Controla el área activa
+  areaSeleccionada: any = null;
 
-  constructor(private tupaService: TupaService) {}
+  constructor(
+    private tupaService: TupaService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  cargarDatos(): void {
     this.tupaService.getTupaCompleto().subscribe({
       next: (res: any) => {
+        // Adaptamos según la estructura que devuelva tu API
         this.areas = res.data ? res.data : res;
       },
-      error: (err: any) => console.error('Error:', err)
+      error: (err: any) => {
+        console.error('Error al cargar TUPA:', err);
+      }
     });
   }
 
-  // Al hacer clic en un área del primer listado
-  seleccionarArea(area: any) {
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  seleccionarArea(area: any): void {
     this.areaSeleccionada = area;
   }
 
-  // Filtrado global por texto (si el usuario busca algo específico directamente)
-  get tramitesFiltrados() {
-    if (!this.areaSeleccionada) return [];
-    if (!this.filterText.trim()) return this.areaSeleccionada.tramites;
+  get tramitesFiltrados(): any[] {
+    if (!this.areaSeleccionada || !this.areaSeleccionada.tramites) {
+      return [];
+    }
+    
+    if (!this.filterText.trim()) {
+      return this.areaSeleccionada.tramites;
+    }
 
     const search = this.filterText.toLowerCase();
     return this.areaSeleccionada.tramites.filter((t: any) =>

@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { Sidebar } from "./layout/sidebar/sidebar";
+import { RouterOutlet } from '@angular/router';
+// No necesitas importar Sidebar aquí si está comentado en el HTML
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Sidebar],
+  imports: [RouterOutlet], // Quitamos Sidebar de aquí
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
