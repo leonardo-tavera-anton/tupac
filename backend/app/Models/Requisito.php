@@ -10,13 +10,8 @@ class Requisito extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
     // Nombre de la tabla
     protected $table = 'requisitos';
-=======
-    // IMPORTANTE: Tu migración crea 'requisitos' (plural), el modelo debe coincidir
-    protected $table = 'requisitos'; 
->>>>>>> aa2fccf0d093e4b2c927b6f4cc309afe767a5bb5
 
     protected $fillable = [
         'tramite_id',    // Falta en el tuyo
