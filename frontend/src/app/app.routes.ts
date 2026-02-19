@@ -1,14 +1,21 @@
 import { Routes } from '@angular/router';
-import { TupaComponent } from './pages/tupa/tupa'; // <--- Cambiado de Tupa a TupaComponent
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'tupa',
-    component: TupaComponent // <--- Debe coincidir con el nombre de la clase
+    path: 'login',
+    loadComponent: () => import('./pages/auth/login.component').then(m => m.LoginComponent)
   },
   {
-    path: '',
-    redirectTo: 'tupa',
-    pathMatch: 'full'
-  }
+    path: 'register',
+    loadComponent: () => import('./pages/auth/register.component').then(m => m.RegisterComponent)
+  },
+  {
+    path: 'tupa',
+    loadComponent: () => import('./pages/tupa/tupa.component').then(m => m.TupaComponent),
+    canActivate: [authGuard] // ¡Ruta protegida!
+  },
+  // Redirección por defecto a la página principal (protegida) o al login
+  { path: '', redirectTo: '/tupa', pathMatch: 'full' },
+  { path: '**', redirectTo: '/tupa' } // Redirigir cualquier otra ruta
 ];
