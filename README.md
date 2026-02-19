@@ -40,7 +40,7 @@ tupac
 │  │  │  └─ UsuarioRepository.php
 │  │  └─ Services
 │  │     ├─ AreaService.php
-│  │     ├─ RequisitoRepository.php
+│  │     ├─ RequisitoService.php
 │  │     ├─ TramiteService.php
 │  │     └─ UsuarioService.php
 │  ├─ artisan
@@ -57,6 +57,7 @@ tupac
 │  │  ├─ app.php
 │  │  ├─ auth.php
 │  │  ├─ cache.php
+│  │  ├─ cors.php
 │  │  ├─ database.php
 │  │  ├─ filesystems.php
 │  │  ├─ logging.php
@@ -76,7 +77,8 @@ tupac
 │  │  │  ├─ 0001_01_01_000005_create_requisitos_table.php
 │  │  │  └─ 2026_02_12_164402_create_personal_access_tokens_table.php
 │  │  └─ seeders
-│  │     └─ DatabaseSeeder.php
+│  │     ├─ DatabaseSeeder.php
+│  │     └─ TupaSeeder.php
 │  ├─ GEMINI.md
 │  ├─ package-lock.json
 │  ├─ package.json
@@ -102,7 +104,8 @@ tupac
 │  ├─ storage
 │  │  ├─ app
 │  │  │  ├─ private
-│  │  │  └─ public
+│  │  │  ├─ public
+│  │  │  └─ tupa_data.csv
 │  │  ├─ framework
 │  │  │  ├─ cache
 │  │  │  │  └─ data
@@ -12777,6 +12780,7 @@ tupac
    │        └─ frontend
    │           ├─ .tsbuildinfo
    │           └─ vite
+   │              ├─ com.chrome.devtools.json
    │              ├─ deps
    │              │  ├─ @angular_common.js
    │              │  ├─ @angular_common.js.map
@@ -12784,20 +12788,22 @@ tupac
    │              │  ├─ @angular_common_http.js.map
    │              │  ├─ @angular_core.js
    │              │  ├─ @angular_core.js.map
+   │              │  ├─ @angular_forms.js
+   │              │  ├─ @angular_forms.js.map
    │              │  ├─ @angular_platform-browser.js
    │              │  ├─ @angular_platform-browser.js.map
    │              │  ├─ @angular_router.js
    │              │  ├─ @angular_router.js.map
-   │              │  ├─ chunk-75V7EJED.js
-   │              │  ├─ chunk-75V7EJED.js.map
-   │              │  ├─ chunk-AD7SOG2D.js
-   │              │  ├─ chunk-AD7SOG2D.js.map
-   │              │  ├─ chunk-D2GLLTVP.js
-   │              │  ├─ chunk-D2GLLTVP.js.map
+   │              │  ├─ chunk-ASEJD5SE.js
+   │              │  ├─ chunk-ASEJD5SE.js.map
+   │              │  ├─ chunk-PVOITZL7.js
+   │              │  ├─ chunk-PVOITZL7.js.map
    │              │  ├─ chunk-R6U7IGMG.js
    │              │  ├─ chunk-R6U7IGMG.js.map
-   │              │  ├─ chunk-UVSSP24V.js
-   │              │  ├─ chunk-UVSSP24V.js.map
+   │              │  ├─ chunk-TKMHFNEI.js
+   │              │  ├─ chunk-TKMHFNEI.js.map
+   │              │  ├─ chunk-VLTM4UXF.js
+   │              │  ├─ chunk-VLTM4UXF.js.map
    │              │  ├─ package.json
    │              │  └─ _metadata.json
    │              └─ deps_ssr
@@ -12807,6 +12813,8 @@ tupac
    │                 ├─ @angular_common_http.js.map
    │                 ├─ @angular_core.js
    │                 ├─ @angular_core.js.map
+   │                 ├─ @angular_forms.js
+   │                 ├─ @angular_forms.js.map
    │                 ├─ @angular_platform-browser.js
    │                 ├─ @angular_platform-browser.js.map
    │                 ├─ @angular_platform-server_init.js
@@ -12823,16 +12831,16 @@ tupac
    │                 ├─ chunk-BYO5GJWF.js.map
    │                 ├─ chunk-CKHDNQCH.js
    │                 ├─ chunk-CKHDNQCH.js.map
-   │                 ├─ chunk-F4LINQ63.js
-   │                 ├─ chunk-F4LINQ63.js.map
    │                 ├─ chunk-NIP3PVCZ.js
    │                 ├─ chunk-NIP3PVCZ.js.map
-   │                 ├─ chunk-O4XUXMAH.js
-   │                 ├─ chunk-O4XUXMAH.js.map
+   │                 ├─ chunk-RPX5JX76.js
+   │                 ├─ chunk-RPX5JX76.js.map
+   │                 ├─ chunk-RQVBIEML.js
+   │                 ├─ chunk-RQVBIEML.js.map
    │                 ├─ chunk-UCUIZQLI.js
    │                 ├─ chunk-UCUIZQLI.js.map
-   │                 ├─ chunk-WWKZATVZ.js
-   │                 ├─ chunk-WWKZATVZ.js.map
+   │                 ├─ chunk-V3PATYK4.js
+   │                 ├─ chunk-V3PATYK4.js.map
    │                 ├─ express.js
    │                 ├─ express.js.map
    │                 ├─ package.json
