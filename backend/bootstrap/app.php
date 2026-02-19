@@ -11,18 +11,21 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    // manejo para conexion con front puede ser esto o el cors
     ->withMiddleware(function (Middleware $middleware) {
+        // Habilita CORS para que Angular (puerto 4200) pueda hablar con Laravel (8000)
+        $middleware->api(append: [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+
         $middleware->validateCsrfTokens(except: [
             'api/*'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-            // Fuerza a Laravel a responder con JSON si la ruta es de la API
-            $exceptions->shouldRenderJsonWhen(function ($request, $e) {
-                if ($request->is('api/*')) {
-                    return true;
-                }
-                return $request->expectsJson();
-            });
+        $exceptions->shouldRenderJsonWhen(function ($request, $e) {
+            if ($request->is('api/*')) {
+                return true;
+            }
+            return $request->expectsJson();
+        });
     })->create();

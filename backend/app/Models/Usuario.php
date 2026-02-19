@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Importante para el tipado
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Usuario extends Authenticatable
 {
@@ -16,8 +16,7 @@ class Usuario extends Authenticatable
 
     protected $fillable = [
         'nombre',
-        'apellido',
-        'correo',
+        'dni',
         'password',
     ];
 
@@ -26,15 +25,10 @@ class Usuario extends Authenticatable
         'remember_token',
     ];
 
-    // RELACIÓN: Un usuario tiene muchos trámites
     public function tramites(): HasMany
     {
-        return $this->hasMany(Tramite::class, 'usuario_id');
-    }
-
-    public function getEmailAttribute()
-    {
-        return $this->correo;
+        // Usamos id_usuario porque así lo definiste en la migración de trámites
+        return $this->hasMany(Tramite::class, 'id_usuario');
     }
 
     protected function casts(): array
