@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 
-// Importaciones corregidas según tus archivos .ts y carpetas
-import { LoginComponent as Login } from './login.component'; 
-import { RegisterComponent as Register } from './register.component'; 
+// Importaciones corregidas hacia la carpeta 'pages'
+import { Login } from './pages/login/login'; 
+import { Register } from './pages/register/register'; 
 import { Tupa } from './pages/tupa/tupa'; 
 
 export const routes: Routes = [
   { 
     path: 'login', 
-    component: Login // Antes decía LoginComponent
+    component: Login 
   },
   { 
     path: 'register', 
-    component: Register // Antes decía RegisterComponent
+    component: Register 
   },
   { 
     path: 'tupa', 

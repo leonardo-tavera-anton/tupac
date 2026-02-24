@@ -1,14 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-// No necesitas importar Sidebar aquí si está comentado en el HTML
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet], // Quitamos Sidebar de aquí
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('frontend');
+export class AppComponent {
+  title = 'tupac-frontend';
 }

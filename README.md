@@ -40,6 +40,7 @@ tupac
 │  │  │  └─ UsuarioRepository.php
 │  │  └─ Services
 │  │     ├─ AreaService.php
+│  │     ├─ AuthService.php
 │  │     ├─ RequisitoService.php
 │  │     ├─ TramiteService.php
 │  │     └─ UsuarioService.php
@@ -125,6 +126,7 @@ tupac
 │  │  │     ├─ 468d2a3c252b97c7cec1c513e3996bc7.php
 │  │  │     ├─ 4b1293330c93440277d68fea14bb25ce.php
 │  │  │     ├─ 4ca80581acbd3f9c86101669a4fdb693.php
+│  │  │     ├─ 55607aac01eb4c99b0031fdad5f9dba0.php
 │  │  │     ├─ 589a41137589b4052b7a0a23fce9906d.php
 │  │  │     ├─ 5d935ecd21267d8b35956149d0f0e20d.php
 │  │  │     ├─ 61ca069dbb377786b4ebf4954c96ba4d.php
@@ -12852,10 +12854,10 @@ tupac
    ├─ package-lock.json
    ├─ package.json
    ├─ public
-   │  ├─ favicon.ico
+   │  ├─ Logito.ico
    │  ├─ LOGO final.png
-   │  ├─ LOGO MDNCH.png
-   │  └─ LOGO-MDNCH.png
+   │  ├─ LOGO-MDNCH.png
+   │  └─ SOLO-LOGO-MDNCH.png
    ├─ README.md
    ├─ src
    │  ├─ app
@@ -12873,18 +12875,31 @@ tupac
    │  │  │     ├─ sidebar.scss
    │  │  │     ├─ sidebar.spec.ts
    │  │  │     └─ sidebar.ts
+   │  │  ├─ login.component.ts
    │  │  ├─ pages
    │  │  │  ├─ inicio
    │  │  │  │  ├─ inicio.html
    │  │  │  │  ├─ inicio.scss
    │  │  │  │  ├─ inicio.spec.ts
    │  │  │  │  └─ inicio.ts
+   │  │  │  ├─ login
+   │  │  │  │  ├─ login.html
+   │  │  │  │  ├─ login.scss
+   │  │  │  │  └─ login.ts
+   │  │  │  ├─ register
+   │  │  │  │  ├─ register.html
+   │  │  │  │  ├─ register.scss
+   │  │  │  │  └─ register.ts
    │  │  │  └─ tupa
    │  │  │     ├─ tupa.html
    │  │  │     ├─ tupa.scss
    │  │  │     ├─ tupa.spec.ts
    │  │  │     └─ tupa.ts
+   │  │  ├─ register.component.ts
    │  │  └─ services
+   │  │     ├─ auth.guard.ts
+   │  │     ├─ auth.interceptor.ts
+   │  │     ├─ auth.service.ts
    │  │     ├─ tupa.service.ts
    │  │     └─ tupa.spec.ts
    │  ├─ index.html
