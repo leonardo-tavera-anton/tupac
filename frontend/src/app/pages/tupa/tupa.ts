@@ -14,8 +14,10 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Tupa implements OnInit {
   areas: any[] = [];
-  filterText: string = '';
+  
+  // Nuestras dos variables principales para los Combobox
   areaSeleccionada: any = null;
+  tramiteSeleccionado: any = null; 
 
   constructor(
     private tupaService: TupaService,
@@ -44,22 +46,27 @@ export class Tupa implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  // --- NUEVA LÓGICA PARA LOS COMBOBOX ---
+
+  // 1. Al elegir un área en el primer select
   seleccionarArea(area: any): void {
     this.areaSeleccionada = area;
+    // Reseteamos el trámite para que el segundo select se limpie automáticamente
+    this.tramiteSeleccionado = null; 
   }
 
+  // 2. Al elegir un trámite en el segundo select
+  seleccionarTramite(tramite: any): void {
+    this.tramiteSeleccionado = tramite;
+  }
+
+  // 3. Obtenemos los trámites del área para llenar el segundo select
   get tramitesFiltrados(): any[] {
     if (!this.areaSeleccionada || !this.areaSeleccionada.tramites) {
       return [];
     }
-    
-    if (!this.filterText.trim()) {
-      return this.areaSeleccionada.tramites;
-    }
-
-    const search = this.filterText.toLowerCase();
-    return this.areaSeleccionada.tramites.filter((t: any) =>
-      (t.nombre_tramite || '').toLowerCase().includes(search)
-    );
+    // Como ya no usamos barra de búsqueda, simplemente devolvemos la lista completa del área
+    return this.areaSeleccionada.tramites;
   }
+  
 }
