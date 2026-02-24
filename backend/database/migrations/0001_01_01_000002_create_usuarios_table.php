@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id(); // Este es el ID que usan las llaves foráneas
             $table->string('nombre'); // Cambiado de 'name' a 'nombre'
-            $table->string('dni')->unique(); // Cambiado de 'email' a 'dni'
+            $table->string('correo')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

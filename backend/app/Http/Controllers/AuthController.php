@@ -10,16 +10,18 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        // 1. Validamos que vengan los 4 campos desde Angular
         $fields = $request->validate([
-            'nombre'   => 'required|string|max:100',
-            'dni'      => 'required|string|max:8|unique:usuarios,dni',
-            'password' => 'required|string|min:6|confirmed' // 'confirmed' busca un campo 'password_confirmation'
+            'nombre'   => 'required|string|max:100|unique:usuarios,nombre',
+            'correo'   => 'required|email|unique:usuarios,correo',
+            'password' => 'required|string|min:6|confirmed' // Exige 'password_confirmation'
         ]);
 
+        // 2. Creamos el usuario
         $user = Usuario::create([
             'nombre'   => $fields['nombre'],
-            'dni'      => $fields['dni'],
-            'password' => $fields['password'], // El 'hashed' cast en el modelo se encarga del cifrado
+            'correo'   => $fields['correo'],
+            'password' => $fields['password'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -32,16 +34,17 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // 1. Pedimos estrictamente 'nombre' y 'password'
         $fields = $request->validate([
-            'dni'      => 'required|string',
+            'nombre'   => 'required|string',
             'password' => 'required|string'
         ]);
 
-        // Check DNI
-        $user = Usuario::where('dni', $fields['dni'])->first();
+        // 2. Buscamos al usuario por su 'nombre' (Ej: oscar17)
+        $user = Usuario::where('nombre', $fields['nombre'])->first();
 
-        // Check password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        // 3. Hash::check compara tu texto plano con el hash de la DB
+        if (!$user || !\Hash::check($fields['password'], $user->password)) {
             return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
 

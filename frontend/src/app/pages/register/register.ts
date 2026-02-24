@@ -12,10 +12,11 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './register.scss'
 })
 export class Register {
-  newUser = {
+    newUser = {
     nombre: '',
     correo: '',
-    password: ''
+    password: '',
+    password_confirmation: '' // Obligatorio por la regla 'confirmed' de Laravel
   };
 
   constructor(private auth: AuthService, private router: Router) {}
