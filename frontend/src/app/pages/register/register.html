@@ -1,29 +1,32 @@
-<div class="auth-container">
-  <div class="auth-card">
+<div class="login-container">
+  <div class="login-card">
     <h2>Crear Cuenta</h2>
     <form (submit)="onRegister()">
-      <div class="form-group">
+      <div class="campo">
         <label>Nombre de Usuario</label>
         <input type="text" [(ngModel)]="newUser.nombre" name="nombre" placeholder="Ej: oscar17" required>
       </div>
 
-      <div class="form-group">
+      <div class="campo">
         <label>Correo Electrónico</label>
         <input type="email" [(ngModel)]="newUser.correo" name="correo" placeholder="correo@ejemplo.com" required>
       </div>
 
-      <div class="form-group">
+      <div class="campo">
         <label>Contraseña</label>
         <input type="password" [(ngModel)]="newUser.password" name="password" placeholder="Min. 6 caracteres" minlength="6" required>
       </div>
 
-      <div class="form-group">
+      <div class="campo">
         <label>Confirmar Contraseña</label>
         <input type="password" [(ngModel)]="newUser.password_confirmation" name="password_confirmation" placeholder="Repite la contraseña" required>
       </div>
 
-      <button type="submit" class="btn-primary">Registrar</button>
-      <a routerLink="/login" class="link">Ya tengo cuenta</a>
+      <button type="submit">Registrar</button>
+
+      <div class="info">
+        <p>¿Ya tienes cuenta? <a routerLink="/login"><strong>Inicia sesión</strong></a></p>
+      </div>
     </form>
   </div>
 </div>

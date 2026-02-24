@@ -1,89 +1,134 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
 .login-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #1e1e2d;
+  justify-content: center;
+  padding: 20px;
+  /* Degradado Azul Profesional */
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  font-family: 'Segoe UI', Roboto, sans-serif;
 
   .login-card {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    width: 350px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    text-align: center; // Centra el contenido general
-
-    .logo {
-      width: 120px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: slideUp 0.5s ease;
 
     h2 {
-      margin-bottom: 25px;
-      color: #333;
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      /* Texto en degradado azul */
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
     }
 
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left; // Mantiene las etiquetas a la izquierda
+    .campo {
+      margin-bottom: 25px;
 
       label {
         display: block;
-        margin-bottom: 5px;
-        color: #666;
         font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       input {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+        padding: 12px 15px;
+        border: 2px solid #e1e1e1;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
         box-sizing: border-box;
-        transition: border-color 0.3s;
 
         &:focus {
-          border-color: #00d4ff;
+          border-color: #2a5298;
           outline: none;
+          box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        &::placeholder {
+          color: #aaa;
         }
       }
     }
 
-    .btn-primary {
+    button {
       width: 100%;
-      padding: 12px;
-      background-color: #00d4ff;
+      /* Botón Azul */
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
       color: white;
       border: none;
-      border-radius: 6px;
+      padding: 14px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
       margin-top: 10px;
-      transition: background 0.3s;
+      text-transform: uppercase;
 
-      &:hover {
-        background-color: #00b8e0;
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
       }
     }
 
-    // Estilo para el enlace de registro
-    .register-link {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #666;
+    .info {
+      margin-top: 30px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      text-align: center;
+
+      p {
+        color: #555;
+        font-size: 0.95rem;
+        margin: 0;
+      }
 
       a {
-        color: #00d4ff;
         text-decoration: none;
-        font-weight: bold;
+      }
 
+      strong {
+        color: #1e3c72;
+        transition: all 0.3s ease;
+        
         &:hover {
+          color: #2a5298;
           text-decoration: underline;
         }
       }
     }
   }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
