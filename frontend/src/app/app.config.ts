@@ -8,10 +8,13 @@ import { AuthInterceptor } from './services/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    // Añadimos withFetch() aquí:
+    // Activa Zone.js para la detección de cambios
+    provideZoneChangeDetection({ eventCoalescing: true }), 
+    // Configura las rutas de la aplicación
+    provideRouter(routes), 
+    // Habilita el cliente HTTP con soporte para SSR
     provideHttpClient(withFetch(), withInterceptorsFromDi()), 
+    // Registra tu interceptor de autenticación
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ]
 };
