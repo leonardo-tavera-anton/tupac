@@ -13,4 +13,10 @@ export class TupaService {
   getTupaCompleto(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/tramites`);
   }
+
+  getTramites(): Observable<any[]> {
+  // Si estás en otra PC, usa http://192.168.x.x:8000/api/tramites
+  return this.http.get<any[]>('http://localhost:8000/api/tramites');
+}
+  
 }

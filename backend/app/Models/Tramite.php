@@ -7,31 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tramite extends Model
 {
-    // Forzamos el nombre de la tabla en plural como está en tu migración
-    protected $table = 'tramites'; 
-
-    // También asegúrate de que la llave primaria sea la que pusiste en la migración
+    protected $table = 'tramite'; // Forzamos el nombre en singular
     protected $primaryKey = 'id_tramite';
+    protected $fillable = ['codigo_tupa', 'nombre_tramite', 'id_area', 'id_usuario', 'es_generico'];
+    
+    public function area() {
+    return $this->belongsTo(Area::class, 'id_area');
+}
 
-    protected $fillable = [
-        'usuario_id',
-        'codigo_tupa',
-        'nombre_tramite',
-        'monto',
-        'id_area',
-        'modalidad',
-        'descripcion_tecnica',
-        'unidad_medida',
-        'es_generico'
-    ];
-
-    public function requisitos()
-    {
-        return $this->hasMany(Requisito::class, 'tramite_id', 'id_tramite');
-    }
-
-    public function area()
-    {
-        return $this->belongsTo(Area::class, 'id_area');
-    }
+public function requisitos() {
+    // IMPORTANTE: Asegúrate de que el nombre del modelo sea Requisito
+    return $this->hasMany(Requisito::class, 'tramite_id', 'id_tramite');
+}
 }

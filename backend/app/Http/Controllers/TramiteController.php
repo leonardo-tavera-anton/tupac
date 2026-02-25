@@ -18,14 +18,11 @@ class TramiteController extends Controller {
     /**
      * Devuelve las Áreas con sus Trámites y Requisitos anidados
      */
-    public function index(Request $request) {
-        // Usamos Eager Loading para evitar el problema de consultas N+1
-        // Esto trae: Area -> Trámites -> Requisitos en una sola carga
-        $areas = Area::with(['tramites.requisitos'])->get();
-        
-        // Usamos AreaResource para devolver el JSON formateado
-        return AreaResource::collection($areas);
-    }
+   public function index() {
+    // Esto trae el trámite + el nombre del área + sus requisitos (importe, factor, etc.)
+    $tramites = Tramite::with(['area', 'requisitos'])->get();
+    return response()->json($tramites);
+}
 
     public function store(Request $request) {
         return new TramiteResource($this->service->registrar($request->all()));

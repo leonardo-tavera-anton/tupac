@@ -2,7 +2,7 @@
   <div class="dashboard-header">
     <div class="header-content">
       <h2>Portal TUPA</h2>
-      <p>Seleccione un área y un trámite para ver los requisitos.</p>
+      <p>Consulta requisitos, costos e importes de trámites administrativos.</p>
     </div>
   </div>
 
@@ -10,7 +10,6 @@
     
     <div class="search-section card-modern">
       <div class="row">
-        
         <div class="col-md-6 form-group">
           <label>1. Seleccione un Área</label>
           <div class="select-wrapper">
@@ -38,7 +37,7 @@
                 {{ areaSeleccionada ? '-- Elija un trámite --' : 'Primero elija un área' }}
               </option>
               <option *ngFor="let tramite of tramitesFiltrados" [ngValue]="tramite">
-                {{ tramite.nombre_tramite }}
+                {{ tramite.codigo_tupa ? tramite.codigo_tupa + ' - ' : '' }}{{ tramite.nombre_tramite }}
               </option>
             </select>
           </div>
@@ -48,27 +47,71 @@
 
     <div class="results-section mt-4" *ngIf="tramiteSeleccionado">
       <div class="card-modern">
-        <div class="card-header">
-          <h3>Requisitos y Tasas</h3>
-          <span class="badge-modern">{{ tramiteSeleccionado.nombre_tramite }}</span>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h3>Detalles del Trámite</h3>
+            <span class="badge-modern">{{ tramiteSeleccionado.nombre_tramite }}</span>
+          </div>
+          <div class="tupa-code" *ngIf="tramiteSeleccionado.codigo_tupa">
+            Código TUPA: <strong>{{ tramiteSeleccionado.codigo_tupa }}</strong>
+          </div>
         </div>
         
         <div class="card-body">
-          <ul class="requisitos-list">
-            <li *ngFor="let req of tramiteSeleccionado.requisitos">
-              <div class="icon-check">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              </div>
-              <p>{{ req.descripcion }}</p>
-            </li>
-          </ul>
+          <h4 class="section-title">Requisitos y Conceptos de Pago</h4>
+          
+          <div class="table-responsive">
+            <table class="table table-modern">
+              <thead>
+                <tr>
+                  <th>Orden</th>
+                  <th>Descripción / Específica</th>
+                  <th class="text-right">Importe (S/)</th>
+                  <th class="text-right">Factor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let req of tramiteSeleccionado.requisitos">
+                  <td class="text-center">{{ req.orden }}</td>
+                  <td>
+                    <div class="d-flex align-items-start">
+                      <div class="icon-check-small mr-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+                      {{ req.descripcion }}
+                    </div>
+                  </td>
+                  
+                  <td class="text-right font-weight-bold">
+                    {{ +req.importe > 0 ? (+req.importe | number:'1.2-2') : '---' }}
+                  </td>
+                  
+                  <td class="text-right text-muted small">
+                    {{ +req.factor > 0 ? req.factor : '---' }}
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="calcularTotal(tramiteSeleccionado.requisitos) > 0">
+                <tr>
+                  <td colspan="2" class="text-right font-weight-bold">TOTAL A PAGAR:</td>
+                  <td class="text-right total-amount">
+                    S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="empty-state mt-4" *ngIf="areaSeleccionada && !tramiteSeleccionado">
       <div class="card-modern text-center p-5">
-        <h4 class="text-muted">Por favor, seleccione un trámite para ver sus detalles.</h4>
+        <div class="empty-icon mb-3">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        </div>
+        <h4 class="text-muted">Por favor, seleccione un trámite para ver el desglose de costos y requisitos.</h4>
       </div>
     </div>
 
