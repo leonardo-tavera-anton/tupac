@@ -1,119 +1,97 @@
 <div class="tupa-dashboard">
-  <div class="dashboard-header">
+  <header class="dashboard-header">
     <div class="header-content">
-      <h2>Portal TUPA</h2>
-      <p>Consulta requisitos, costos e importes de trámites administrativos.</p>
+      <div class="muni-tag">GOBIERNO REGIONAL</div>
+      <h1>Portal TUPA 2026</h1>
+      <p>Plataforma Digital de Trámites y Servicios</p>
     </div>
-  </div>
+  </header>
 
-  <div class="dashboard-container">
-    
-    <div class="search-section card-modern">
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>1. Seleccione un Área</label>
-          <div class="select-wrapper">
-            <select 
-              class="form-control modern-select" 
-              [ngModel]="areaSeleccionada" 
-              (ngModelChange)="seleccionarArea($event)">
-              <option [ngValue]="null" disabled selected>-- Elija un área administrativa --</option>
-              <option *ngFor="let area of areas" [ngValue]="area">
-                {{ area.nombre }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="col-md-6 form-group">
-          <label>2. Seleccione un Trámite</label>
-          <div class="select-wrapper">
-            <select 
-              class="form-control modern-select" 
-              [ngModel]="tramiteSeleccionado" 
-              (ngModelChange)="seleccionarTramite($event)"
-              [disabled]="!areaSeleccionada">
-              <option [ngValue]="null" disabled selected>
-                {{ areaSeleccionada ? '-- Elija un trámite --' : 'Primero elija un área' }}
-              </option>
-              <option *ngFor="let tramite of tramitesFiltrados" [ngValue]="tramite">
-                {{ tramite.codigo_tupa ? tramite.codigo_tupa + ' - ' : '' }}{{ tramite.nombre_tramite }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="results-section mt-4" *ngIf="tramiteSeleccionado">
-      <div class="card-modern">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <div>
-            <h3>Detalles del Trámite</h3>
-            <span class="badge-modern">{{ tramiteSeleccionado.nombre_tramite }}</span>
-          </div>
-          <div class="tupa-code" *ngIf="tramiteSeleccionado.codigo_tupa">
-            Código TUPA: <strong>{{ tramiteSeleccionado.codigo_tupa }}</strong>
-          </div>
-        </div>
+  <div class="main-layout">
+    <aside class="sidebar-panel">
+      <div class="filter-card glass-panel">
+        <h3 class="panel-title">Realizar Consulta</h3>
         
-        <div class="card-body">
-          <h4 class="section-title">Requisitos y Conceptos de Pago</h4>
-          
-          <div class="table-responsive">
-            <table class="table table-modern">
-              <thead>
-                <tr>
-                  <th>Orden</th>
-                  <th>Descripción / Específica</th>
-                  <th class="text-right">Importe (S/)</th>
-                  <th class="text-right">Factor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let req of tramiteSeleccionado.requisitos">
-                  <td class="text-center">{{ req.orden }}</td>
-                  <td>
-                    <div class="d-flex align-items-start">
-                      <div class="icon-check-small mr-2">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      </div>
-                      {{ req.descripcion }}
-                    </div>
-                  </td>
-                  
-                  <td class="text-right font-weight-bold">
-                    {{ +req.importe > 0 ? (+req.importe | number:'1.2-2') : '---' }}
-                  </td>
-                  
-                  <td class="text-right text-muted small">
-                    {{ +req.factor > 0 ? req.factor : '---' }}
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot *ngIf="calcularTotal(tramiteSeleccionado.requisitos) > 0">
-                <tr>
-                  <td colspan="2" class="text-right font-weight-bold">TOTAL A PAGAR:</td>
-                  <td class="text-right total-amount">
-                    S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}
-                  </td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
+        <div class="filter-group" [style.opacity]="areaSeleccionada ? '1' : '1'">
+          <label class="input-label">🔍 BUSCADOR DIRECTO</label>
+          <input type="text" class="form-control modern-input" 
+                 placeholder="Escriba nombre o código..."
+                 [(ngModel)]="terminoBusqueda" (input)="buscarPorTexto()" 
+                 [disabled]="areaSeleccionada !== null">
+        </div>
+
+        <div class="divider-sidebar"><span>O FILTRE POR ÁREAS</span></div>
+
+        <div class="filter-group" [style.opacity]="terminoBusqueda.length > 0 ? '0.6' : '1'">
+          <label class="input-label">🏢 ÁREA ADMINISTRATIVA</label>
+          <select class="form-control modern-select" [ngModel]="areaSeleccionada" 
+                  (ngModelChange)="seleccionarArea($event)" [disabled]="terminoBusqueda.length > 0">
+            <option [ngValue]="null">-- Seleccione oficina --</option>
+            <option *ngFor="let area of areas" [ngValue]="area">{{ area.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group" [style.opacity]="terminoBusqueda.length > 0 ? '0.6' : '1'">
+          <label class="input-label">📄 TRÁMITE A REALIZAR</label>
+          <select class="form-control modern-select" [ngModel]="tramiteSeleccionado" 
+                  (ngModelChange)="seleccionarTramite($event)" [disabled]="!areaSeleccionada || terminoBusqueda.length > 0">
+            <option [ngValue]="null">-- Seleccione trámite --</option>
+            <option *ngFor="let tramite of tramitesFiltrados" [ngValue]="tramite">
+              {{ tramite.nombre_tramite }}
+            </option>
+          </select>
+        </div>
+
+        <div class="action-area" *ngIf="terminoBusqueda || areaSeleccionada">
+          <button class="btn-nueva-consulta" (click)="resetearBusqueda()">
+            ↺ NUEVA CONSULTA
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="results-view">
+      <div class="empty-state" *ngIf="!tramiteSeleccionado && !terminoBusqueda">
+        <div class="icon-placeholder">📋</div>
+        <h3>Bienvenido al Portal TUPA</h3>
+        <p>Utilice el panel izquierdo para buscar un trámite específico.</p>
+      </div>
+
+      <div class="search-preview" *ngIf="terminoBusqueda && !tramiteSeleccionado">
+        <h4 class="preview-title">Resultados para: "{{ terminoBusqueda }}"</h4>
+        <div class="search-list">
+          <div class="search-item-card" *ngFor="let res of resultadosBusqueda" (click)="seleccionarDesdeBusqueda(res)">
+            <div class="item-info">
+              <span class="badge-codigo" *ngIf="res.codigo_tupa">Cód: {{ res.codigo_tupa }}</span>
+              <span class="item-name">{{ res.nombre_tramite }}</span>
+            </div>
+            <span class="arrow-go">➔</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="empty-state mt-4" *ngIf="areaSeleccionada && !tramiteSeleccionado">
-      <div class="card-modern text-center p-5">
-        <div class="empty-icon mb-3">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <div class="full-detail card animate-fade-in" *ngIf="tramiteSeleccionado">
+        <div class="detail-header">
+          <span class="tupa-id">CÓDIGO TUPA: {{ tramiteSeleccionado.codigo_tupa }}</span>
+          <h2 class="tramite-main-title">{{ tramiteSeleccionado.nombre_tramite }}</h2>
         </div>
-        <h4 class="text-muted">Por favor, seleccione un trámite para ver el desglose de costos y requisitos.</h4>
+        <div class="requisitos-grid">
+          <div class="req-item" *ngFor="let req of tramiteSeleccionado.requisitos; let i = index">
+            <div class="req-num">{{ i + 1 }}</div>
+            <div class="req-body">
+              <p class="req-text">{{ req.descripcion }}</p>
+              <div class="req-footer">
+                <span class="req-factor" *ngIf="+req.factor > 0">Factor: {{ req.factor }}</span>
+                <span class="req-cost">S/ {{ +req.importe | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="total-banner">
+          <div class="total-label">MONTO TOTAL A PAGAR</div>
+          <div class="total-amount">S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}</div>
+        </div>
       </div>
-    </div>
-
+    </section>
   </div>
 </div>
