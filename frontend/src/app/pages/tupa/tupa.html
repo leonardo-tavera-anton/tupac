@@ -9,10 +9,10 @@
 
   <div class="main-layout">
     <aside class="sidebar-panel">
-      <div class="filter-card glass-panel">
+      <div class="filter-card sidebar-solid">
         <h3 class="panel-title">Realizar Consulta</h3>
         
-        <div class="filter-group" [style.opacity]="areaSeleccionada ? '1' : '1'">
+        <div class="filter-group">
           <label class="input-label">🔍 BUSCADOR DIRECTO</label>
           <input type="text" class="form-control modern-input" 
                  placeholder="Escriba nombre o código..."
@@ -43,7 +43,7 @@
         </div>
 
         <div class="action-area" *ngIf="terminoBusqueda || areaSeleccionada">
-          <button class="btn-nueva-consulta" (click)="resetearBusqueda()">
+          <button class="btn-nueva-consulta shadow-sm" (click)="resetearBusqueda()">
             ↺ NUEVA CONSULTA
           </button>
         </div>
@@ -51,46 +51,52 @@
     </aside>
 
     <section class="results-view">
-      <div class="empty-state" *ngIf="!tramiteSeleccionado && !terminoBusqueda">
-        <div class="icon-placeholder">📋</div>
-        <h3>Bienvenido al Portal TUPA</h3>
-        <p>Utilice el panel izquierdo para buscar un trámite específico.</p>
-      </div>
+      <div class="full-detail card-solida animate-fade-in">
+        
+        <div class="content-wrapper empty-state-inner" *ngIf="!tramiteSeleccionado && !terminoBusqueda">
+          <div class="icon-placeholder">📋</div>
+          <h3>Bienvenido al Portal TUPA</h3>
+          <p>Utilice el panel izquierdo para buscar un trámite específico.</p>
+        </div>
 
-      <div class="search-preview" *ngIf="terminoBusqueda && !tramiteSeleccionado">
-        <h4 class="preview-title">Resultados para: "{{ terminoBusqueda }}"</h4>
-        <div class="search-list">
-          <div class="search-item-card" *ngFor="let res of resultadosBusqueda" (click)="seleccionarDesdeBusqueda(res)">
-            <div class="item-info">
-              <span class="badge-codigo" *ngIf="res.codigo_tupa">Cód: {{ res.codigo_tupa }}</span>
-              <span class="item-name">{{ res.nombre_tramite }}</span>
+        <div class="content-wrapper search-preview-inner" *ngIf="terminoBusqueda && !tramiteSeleccionado">
+          <h4 class="preview-title">Resultados para: "{{ terminoBusqueda }}"</h4>
+          <div class="search-list">
+            <div class="search-item-card" *ngFor="let res of resultadosBusqueda" (click)="seleccionarDesdeBusqueda(res)">
+              <div class="item-info">
+                <span class="badge-codigo" *ngIf="res.codigo_tupa">CÓD: {{ res.codigo_tupa }}</span>
+                <span class="item-name">{{ res.nombre_tramite }}</span>
+              </div>
+              <span class="arrow-go">➔</span>
             </div>
-            <span class="arrow-go">➔</span>
           </div>
         </div>
-      </div>
 
-      <div class="full-detail card animate-fade-in" *ngIf="tramiteSeleccionado">
-        <div class="detail-header">
-          <span class="tupa-id">CÓDIGO TUPA: {{ tramiteSeleccionado.codigo_tupa }}</span>
-          <h2 class="tramite-main-title">{{ tramiteSeleccionado.nombre_tramite }}</h2>
-        </div>
-        <div class="requisitos-grid">
-          <div class="req-item" *ngFor="let req of tramiteSeleccionado.requisitos; let i = index">
-            <div class="req-num">{{ i + 1 }}</div>
-            <div class="req-body">
-              <p class="req-text">{{ req.descripcion }}</p>
-              <div class="req-footer">
-                <span class="req-factor" *ngIf="+req.factor > 0">Factor: {{ req.factor }}</span>
-                <span class="req-cost">S/ {{ +req.importe | number:'1.2-2' }}</span>
+        <div class="content-wrapper tramite-content" *ngIf="tramiteSeleccionado">
+          <div class="detail-header">
+            <span class="tupa-id">CÓDIGO TUPA: {{ tramiteSeleccionado.codigo_tupa }}</span>
+            <h2 class="tramite-main-title">{{ tramiteSeleccionado.nombre_tramite }}</h2>
+          </div>
+          
+          <div class="requisitos-grid">
+            <div class="req-item" *ngFor="let req of tramiteSeleccionado.requisitos; let i = index">
+              <div class="req-num">{{ i + 1 }}</div>
+              <div class="req-body">
+                <p class="req-text">{{ req.descripcion }}</p>
+                <div class="req-footer">
+                  <span class="req-factor" *ngIf="+req.factor > 0">Factor: {{ req.factor }}</span>
+                  <span class="req-cost">S/ {{ +req.importe | number:'1.2-2' }}</span>
+                </div>
               </div>
             </div>
           </div>
+
+          <div class="total-banner">
+            <div class="total-label">MONTO TOTAL A PAGAR</div>
+            <div class="total-amount">S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}</div>
+          </div>
         </div>
-        <div class="total-banner">
-          <div class="total-label">MONTO TOTAL A PAGAR</div>
-          <div class="total-amount">S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}</div>
-        </div>
+
       </div>
     </section>
   </div>
