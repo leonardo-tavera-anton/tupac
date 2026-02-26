@@ -5,54 +5,44 @@
       <h1>Portal TUPA 2026</h1>
       <p>Plataforma Digital de Trámites y Servicios</p>
     </div>
+    <div class="header-actions">
+      <button class="btn-action outline" (click)="verMisTramites()">📁 Mis Trámites</button>
+      <button class="btn-action logout" (click)="cerrarSesion()">🚪 Salir</button>
+    </div>
   </header>
 
   <div class="main-layout">
     <aside class="sidebar-panel">
       <div class="filter-card sidebar-solid">
         <h3 class="panel-title">Realizar Consulta</h3>
-        
         <div class="filter-group">
           <label class="input-label">🔍 BUSCADOR DIRECTO</label>
-          <input type="text" class="form-control modern-input" 
-                 placeholder="Escriba nombre o código..."
-                 [(ngModel)]="terminoBusqueda" (input)="buscarPorTexto()" 
-                 [disabled]="areaSeleccionada !== null">
+          <input type="text" class="form-control modern-input" placeholder="Escriba nombre o código..."
+                 [(ngModel)]="terminoBusqueda" (input)="buscarPorTexto()" [disabled]="areaSeleccionada !== null">
         </div>
-
         <div class="divider-sidebar"><span>O FILTRE POR ÁREAS</span></div>
-
-        <div class="filter-group" [style.opacity]="terminoBusqueda.length > 0 ? '0.6' : '1'">
+        <div class="filter-group">
           <label class="input-label">🏢 ÁREA ADMINISTRATIVA</label>
-          <select class="form-control modern-select" [ngModel]="areaSeleccionada" 
-                  (ngModelChange)="seleccionarArea($event)" [disabled]="terminoBusqueda.length > 0">
+          <select class="form-control modern-select" [ngModel]="areaSeleccionada" (ngModelChange)="seleccionarArea($event)" [disabled]="terminoBusqueda.length > 0">
             <option [ngValue]="null">-- Seleccione oficina --</option>
             <option *ngFor="let area of areas" [ngValue]="area">{{ area.nombre }}</option>
           </select>
         </div>
-
-        <div class="filter-group" [style.opacity]="terminoBusqueda.length > 0 ? '0.6' : '1'">
+        <div class="filter-group">
           <label class="input-label">📄 TRÁMITE A REALIZAR</label>
-          <select class="form-control modern-select" [ngModel]="tramiteSeleccionado" 
-                  (ngModelChange)="seleccionarTramite($event)" [disabled]="!areaSeleccionada || terminoBusqueda.length > 0">
+          <select class="form-control modern-select" [ngModel]="tramiteSeleccionado" (ngModelChange)="seleccionarTramite($event)" [disabled]="!areaSeleccionada || terminoBusqueda.length > 0">
             <option [ngValue]="null">-- Seleccione trámite --</option>
-            <option *ngFor="let tramite of tramitesFiltrados" [ngValue]="tramite">
-              {{ tramite.nombre_tramite }}
-            </option>
+            <option *ngFor="let tramite of tramitesFiltrados" [ngValue]="tramite">{{ tramite.nombre_tramite }}</option>
           </select>
         </div>
-
         <div class="action-area" *ngIf="terminoBusqueda || areaSeleccionada">
-          <button class="btn-nueva-consulta shadow-sm" (click)="resetearBusqueda()">
-            ↺ NUEVA CONSULTA
-          </button>
+          <button class="btn-nueva-consulta" (click)="resetearBusqueda()">↺ NUEVA CONSULTA</button>
         </div>
       </div>
     </aside>
 
     <section class="results-view">
       <div class="full-detail card-solida animate-fade-in">
-        
         <div class="content-wrapper empty-state-inner" *ngIf="!tramiteSeleccionado && !terminoBusqueda">
           <div class="icon-placeholder">📋</div>
           <h3>Bienvenido al Portal TUPA</h3>
@@ -74,29 +64,35 @@
 
         <div class="content-wrapper tramite-content" *ngIf="tramiteSeleccionado">
           <div class="detail-header">
-            <span class="tupa-id">CÓDIGO TUPA: {{ tramiteSeleccionado.codigo_tupa }}</span>
+            <div class="header-top-row">
+              <span class="tupa-id">CÓDIGO TUPA: {{ tramiteSeleccionado.codigo_tupa }}</span>
+              <button class="btn-save-modern" (click)="guardarTramite(tramiteSeleccionado)">⭐ Guardar Selección</button>
+            </div>
             <h2 class="tramite-main-title">{{ tramiteSeleccionado.nombre_tramite }}</h2>
           </div>
-          
+
           <div class="requisitos-grid">
-            <div class="req-item" *ngFor="let req of tramiteSeleccionado.requisitos; let i = index">
-              <div class="req-num">{{ i + 1 }}</div>
+            <div class="req-item" 
+                 *ngFor="let req of tramiteSeleccionado.requisitos"
+                 [class.selected]="itemsSeleccionados.has(req)"
+                 (click)="toggleItem(req)">
+              <div class="req-check">
+                 <input type="checkbox" [checked]="itemsSeleccionados.has(req)">
+              </div>
               <div class="req-body">
                 <p class="req-text">{{ req.descripcion }}</p>
                 <div class="req-footer">
-                  <span class="req-factor" *ngIf="+req.factor > 0">Factor: {{ req.factor }}</span>
                   <span class="req-cost">S/ {{ +req.importe | number:'1.2-2' }}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="total-banner">
-            <div class="total-label">MONTO TOTAL A PAGAR</div>
-            <div class="total-amount">S/ {{ calcularTotal(tramiteSeleccionado.requisitos) | number:'1.2-2' }}</div>
+          <div class="total-banner" [style.opacity]="itemsSeleccionados.size > 0 ? '1' : '0.5'">
+            <div class="total-label">MONTO TOTAL SELECCIONADO</div>
+            <div class="total-amount">S/ {{ calcularTotalSeleccionado() | number:'1.2-2' }}</div>
           </div>
         </div>
-
       </div>
     </section>
   </div>

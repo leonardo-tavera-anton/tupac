@@ -18,13 +18,36 @@ export class Login {
   constructor(private auth: AuthService, private router: Router) {}
 
   onLogin() {
+    // Validamos que los campos no estén vacíos antes de enviar
+    if (!this.user.nombre || !this.user.password) {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
+
     this.auth.login(this.user).subscribe({
       next: (res: any) => {
+        /** * MEJORA: Guardamos la sesión para que "Tramites" la reconozca.
+         * Guardamos el objeto con el nombre que el usuario ingresó.
+         */
+        const sessionData = { 
+          nombre: this.user.nombre,
+          fecha: new Date().toISOString() 
+        };
+        
+        localStorage.setItem('user_session', JSON.stringify(sessionData));
+
+        // Si tu backend devuelve un token, también lo guardamos aquí
+        if (res.token) {
+          localStorage.setItem('user_token', res.token);
+        }
+
         this.router.navigate(['/tupa']); 
       },
       error: (err: any) => {
         console.error('Error de login:', err);
-        alert('Nombre o contraseña incorrectos');
+        // Manejo de errores más amigable
+        const msg = err.error?.message || 'Nombre o contraseña incorrectos';
+        alert(msg);
       }
     });
   }

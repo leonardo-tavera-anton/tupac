@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; 
 import { TupaService } from '../../services/tupa.service';
 
 @Component({
@@ -14,12 +15,15 @@ export class Tupa implements OnInit {
   areas: any[] = [];
   areaSeleccionada: any = null;
   tramiteSeleccionado: any = null;
-  
   todosLosTramites: any[] = [];
   terminoBusqueda: string = '';
   resultadosBusqueda: any[] = [];
+  misTramitesGuardados: any[] = [];
 
-  constructor(private tupaService: TupaService) {}
+  // NUEVO: Control de selección de ítems
+  itemsSeleccionados: Set<any> = new Set();
+
+  constructor(private tupaService: TupaService, private router: Router) {}
 
   ngOnInit(): void {
     this.tupaService.getTupaCompleto().subscribe((res: any) => {
@@ -27,6 +31,11 @@ export class Tupa implements OnInit {
       this.todosLosTramites = data; 
       this.areas = this.agruparDatos(data);
     });
+
+    const guardados = localStorage.getItem('tupa_fav_2026');
+    if (guardados) {
+      this.misTramitesGuardados = JSON.parse(guardados);
+    }
   }
 
   agruparDatos(tramites: any[]): any[] {
@@ -41,24 +50,22 @@ export class Tupa implements OnInit {
     return Array.from(map.values());
   }
 
+  // --- BUSCADOR Y FILTROS (Tus métodos originales) ---
   buscarPorTexto() {
     const term = this.terminoBusqueda.trim().toLowerCase();
     if (term.length < 2) {
       this.resultadosBusqueda = [];
       return;
     }
-    // Buscamos en toda la lista plana
     this.resultadosBusqueda = this.todosLosTramites.filter(t => 
       (t.nombre_tramite || '').toLowerCase().includes(term) ||
       String(t.codigo_tupa || '').toLowerCase().includes(term)
-    ).slice(0, 15); // Lista extendida a 15 resultados
+    ).slice(0, 15);
   }
 
   seleccionarDesdeBusqueda(tramite: any) {
-    this.resetearBusqueda(); // Limpiamos estados previos
-    this.tramiteSeleccionado = tramite;
-    
-    // Intentamos marcar el área en el combo para coherencia visual
+    this.resetearBusqueda();
+    this.seleccionarTramite(tramite);
     const areaId = tramite.area?.id || tramite.id_area;
     const match = this.areas.find(a => a.id === areaId);
     if (match) this.areaSeleccionada = match;
@@ -67,14 +74,12 @@ export class Tupa implements OnInit {
   seleccionarArea(a: any) { 
     this.areaSeleccionada = a; 
     this.tramiteSeleccionado = null; 
+    this.itemsSeleccionados.clear();
   }
   
   seleccionarTramite(t: any) { 
     this.tramiteSeleccionado = t; 
-  }
-  
-  get tramitesFiltrados() { 
-    return this.areaSeleccionada?.tramites || []; 
+    this.itemsSeleccionados.clear();
   }
 
   resetearBusqueda() {
@@ -82,10 +87,61 @@ export class Tupa implements OnInit {
     this.resultadosBusqueda = [];
     this.areaSeleccionada = null;
     this.tramiteSeleccionado = null;
+    this.itemsSeleccionados.clear();
   }
 
-  calcularTotal(reqs: any[]): number {
-    if (!reqs) return 0;
-    return reqs.reduce((acc, c) => acc + (Number(c.importe) || 0), 0);
+  get tramitesFiltrados() { 
+    return this.areaSeleccionada?.tramites || []; 
+  }
+
+  // --- LÓGICA DE SELECCIÓN E IMPORTE ---
+  toggleItem(req: any) {
+    if (this.itemsSeleccionados.has(req)) {
+      this.itemsSeleccionados.delete(req);
+    } else {
+      this.itemsSeleccionados.add(req);
+    }
+  }
+
+  calcularTotalSeleccionado(): number {
+    let total = 0;
+    this.itemsSeleccionados.forEach(item => total += (Number(item.importe) || 0));
+    return total;
+  }
+
+  // --- GUARDADO ESPECÍFICO ---
+  guardarTramite(tramite: any) {
+    if (this.itemsSeleccionados.size === 0) {
+      alert('⚠️ Por favor, seleccione al menos una opción.');
+      return;
+    }
+
+    const data = localStorage.getItem('tupa_fav_2026');
+    let actuales: any[] = data ? JSON.parse(data) : [];
+
+    const seleccionParaGuardar = {
+      id_unico: Date.now(), 
+      codigo_tupa: tramite.codigo_tupa,
+      nombre_tramite: tramite.nombre_tramite,
+      area_nombre: tramite.area?.nombre || 'General',
+      requisitos: Array.from(this.itemsSeleccionados),
+      montoTotal: this.calcularTotalSeleccionado(),
+      fecha: new Date().toLocaleString()
+    };
+
+    actuales.push(seleccionParaGuardar);
+    localStorage.setItem('tupa_fav_2026', JSON.stringify(actuales));
+    this.misTramitesGuardados = actuales;
+    alert('✅ Selección guardada en "Mis Trámites".');
+  }
+
+  // --- NAVEGACIÓN ---
+  verMisTramites() { this.router.navigate(['/tramites']); }
+
+  cerrarSesion() {
+    if (confirm('¿Desea cerrar su sesión actual?')) {
+      localStorage.removeItem('user_token');
+      this.router.navigate(['/login']); 
+    }
   }
 }
