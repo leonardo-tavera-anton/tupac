@@ -11,36 +11,37 @@ import { Router } from '@angular/router';
 })
 export class Tramites implements OnInit {
   guardados: any[] = [];
-  nombreUsuario: string = 'Leonardo'; // Valor por defecto
+  nombreUsuario: string = '';
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.cargarDatos();
-    this.cargarUsuario();
+    this.cargarUsuarioYDatos();
   }
 
-  cargarUsuario() {
-    // Intentamos obtener el nombre del usuario logueado
-    const userSession = localStorage.getItem('user_session'); // Ajusta según tu llave de login
+  cargarUsuarioYDatos() {
+    const userSession = localStorage.getItem('user_session');
     if (userSession) {
       const user = JSON.parse(userSession);
-      this.nombreUsuario = user.nombre || 'Leonardo';
+      this.nombreUsuario = user.nombre;
+      
+      const data = localStorage.getItem('tupa_fav_2026');
+      if (data) {
+        const todosLosTramites = JSON.parse(data);
+        // FILTRO: Solo mostramos lo que pertenece al ciudadano logueado
+        this.guardados = todosLosTramites.filter((t: any) => t.usuario_dueno === this.nombreUsuario);
+      }
+    } else {
+      this.router.navigate(['/login']);
     }
   }
 
-  cargarDatos() {
-    const data = localStorage.getItem('tupa_fav_2026');
-    if (data) {
-      this.guardados = JSON.parse(data);
-    }
-  }
-
-  // Eliminamos usando el id_unico generado en tupa.ts
   eliminarTramite(idUnico: number) {
     if (confirm('¿Desea eliminar esta selección de sus favoritos?')) {
-      this.guardados = this.guardados.filter(t => t.id_unico !== idUnico);
-      localStorage.setItem('tupa_fav_2026', JSON.stringify(this.guardados));
+      const todos = JSON.parse(localStorage.getItem('tupa_fav_2026') || '[]');
+      const actualizados = todos.filter((t: any) => t.id_unico !== idUnico);
+      localStorage.setItem('tupa_fav_2026', JSON.stringify(actualizados));
+      this.cargarUsuarioYDatos(); // Recarga la lista filtrada
     }
   }
 

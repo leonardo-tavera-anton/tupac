@@ -109,18 +109,28 @@ export class Tupa implements OnInit {
     return total;
   }
 
-  // --- GUARDADO ESPECÍFICO ---
+  // --- GUARDADO ESPECÍFICO (CORREGIDO CON USUARIO) ---
   guardarTramite(tramite: any) {
     if (this.itemsSeleccionados.size === 0) {
       alert('⚠️ Por favor, seleccione al menos una opción.');
       return;
     }
 
+    // Rescatamos el nombre del usuario logueado para que el guardado sea personal
+    const sesion = localStorage.getItem('user_session');
+    if (!sesion) {
+      alert('Debe iniciar sesión para guardar trámites.');
+      this.router.navigate(['/login']);
+      return;
+    }
+    const usuarioActual = JSON.parse(sesion).nombre;
+
     const data = localStorage.getItem('tupa_fav_2026');
     let actuales: any[] = data ? JSON.parse(data) : [];
 
     const seleccionParaGuardar = {
       id_unico: Date.now(), 
+      usuario_dueno: usuarioActual, // <--- Esto evita que otros vean tus trámites
       codigo_tupa: tramite.codigo_tupa,
       nombre_tramite: tramite.nombre_tramite,
       area_nombre: tramite.area?.nombre || 'General',
@@ -132,7 +142,7 @@ export class Tupa implements OnInit {
     actuales.push(seleccionParaGuardar);
     localStorage.setItem('tupa_fav_2026', JSON.stringify(actuales));
     this.misTramitesGuardados = actuales;
-    alert('✅ Selección guardada en "Mis Trámites".');
+    alert(`✅ Guardado en tu cuenta (${usuarioActual}).`);
   }
 
   // --- NAVEGACIÓN ---
@@ -141,6 +151,7 @@ export class Tupa implements OnInit {
   cerrarSesion() {
     if (confirm('¿Desea cerrar su sesión actual?')) {
       localStorage.removeItem('user_token');
+      localStorage.removeItem('user_session'); // Limpiamos también la sesión del nombre
       this.router.navigate(['/login']); 
     }
   }

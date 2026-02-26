@@ -5,32 +5,37 @@
       <div class="badge-user">CIUDADANO: {{ nombreUsuario | uppercase }}</div>
     </div>
     <h1>Mis Trámites Guardados</h1>
-    <p>Acceso rápido a tus procedimientos marcados para este 2026.</p>
+    <p>Lista personalizada de procedimientos para el periodo 2026.</p>
   </header>
 
   <main class="content-area">
     <div class="empty-state" *ngIf="guardados.length === 0">
       <div class="empty-icon">📂</div>
-      <h3>Tu lista está vacía</h3>
-      <p>Aún no has guardado ningún trámite en tu perfil.</p>
-      <button class="btn-main" (click)="volverAlPortal()">Buscar Trámites</button>
+      <h3>No tienes trámites en tu cuenta</h3>
+      <p>Los trámites que guardes aparecerán exclusivamente aquí.</p>
+      <button class="btn-primary" (click)="volverAlPortal()">Ir a buscar trámites</button>
     </div>
 
     <div class="saved-grid" *ngIf="guardados.length > 0">
-      <div class="saved-card animate-in" *ngFor="let t of guardados">
+      <div class="saved-card" *ngFor="let t of guardados">
         <div class="card-main">
-          <span class="tupa-id">ID: {{ t.codigo_tupa }}</span>
+          <div class="card-head">
+            <span class="tupa-id">ID TUPA: {{ t.codigo_tupa }}</span>
+            <span class="fecha-badge">{{ t.fecha }}</span>
+          </div>
+          
           <h3>{{ t.nombre_tramite }}</h3>
-          <span class="area-tag">{{ t.area_nombre || 'General' }}</span>
+          <span class="area-tag">{{ t.area_nombre }}</span>
 
           <div class="selection-box">
-            <p class="box-title">OPCIONES SELECCIONADAS:</p>
+            <p class="box-title">REQUISITOS/CONCEPTOS SELECCIONADOS:</p>
             <div class="selection-item" *ngFor="let item of t.requisitos">
               <span class="item-name">• {{ item.descripcion }}</span>
               <span class="item-price">S/ {{ item.importe | number:'1.2-2' }}</span>
             </div>
+            
             <div class="selection-total">
-              <span>TOTAL</span>
+              <span>MONTO TOTAL</span>
               <strong>S/ {{ t.montoTotal | number:'1.2-2' }}</strong>
             </div>
           </div>
@@ -38,7 +43,7 @@
 
         <div class="card-actions">
           <button class="btn-remove" (click)="eliminarTramite(t.id_unico)">
-            Quitar 🗑️
+            Eliminar de mi lista 🗑️
           </button>
         </div>
       </div>
